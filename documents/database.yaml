@@ -1,0 +1,23 @@
+---
+schemaVersion: "2.2"
+description: "Install database details"
+parameters:
+  Message:
+    type: "String"
+    description: "name of instace"
+    default: "Hello World from"
+mainSteps:
+- action: aws:runShellScript
+  name: install python
+  inputs:
+    runCommand:
+    - 'sudo su'
+    - 'yum -y update'
+    - 'yum -y install python-pip'
+    - 'yum -y install git'
+    - 'mkdir git'
+    - 'cd git/'
+    - 'git clone https://github.com/vieer-v2solutions/study-material.git -b master'
+    - 'cd study-material/'
+    - 'pip3 install -r requirements.txt'
+    - 'python3 main.py'
