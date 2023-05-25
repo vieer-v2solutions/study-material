@@ -1,0 +1,10 @@
+name: Hello world
+on:
+  workflow_dispatch:
+
+jobs:
+  application1:
+    runs-on: ubuntu:latest
+    steps:
+      - name: say hello
+        run: cat /etc/hostname
