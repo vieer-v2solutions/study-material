@@ -1,7 +1,7 @@
 resource "aws_autoscaling_group" "Practice_ASG" {
   max_size                  = 10
   min_size                  = 2
-  desired_capacity          = 1
+  desired_capacity          = 3
   launch_configuration      = aws_launch_configuration.ec2_template.name
   health_check_grace_period = 300
   health_check_type         = "ELB"
