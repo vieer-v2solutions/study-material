@@ -1,6 +1,7 @@
 import boto3
 lambda_client = boto3.client('lambda')
 ssm_client = boto3.client('ssm')
+response3 = ssm_client.get_parameter(Name='PROJECT_NAME_REGION', WithDecryption=False)
 response = ssm_client.get_parameter(Name='PROJECT_NAME_RUNTIME', WithDecryption=False)
 response2 = ssm_client.get_parameter(Name='PROJECT_NAME_S3_BUCKET', WithDecryption=False)
 matched_requirements = []

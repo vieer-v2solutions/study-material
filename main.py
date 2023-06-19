@@ -4,6 +4,7 @@ import install_dependence
 import threading
 import shutil
 import os
+os.environ['AWS_DEFAULT_REGION'] = data.response3['Parameter']['Value']
 runtime = data.response['Parameter']['Value']
 bucket = data.response2['Parameter']['Value']
 
