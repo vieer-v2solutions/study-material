@@ -15,4 +15,4 @@ jobs:
     
         - name: Build Docker image
           run: |
-            cd ./code && docker build -t ${{ env.DOCKER_REPO_NAME }}:$GITHUB_RUN_NUMBER
+            cd ./code && docker build -t ${{ secrets.DOCKER_REPO_NAME }}:$GITHUB_RUN_NUMBER .
