@@ -17,8 +17,3 @@ spec:
           image: app:latest
           ports:
             - containerPort: 80
-
-kubectl annotate deployment/<deployment-name> \
-  kubernetes.io/change-cause="Was updated front" \
-  --record
-
