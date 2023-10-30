@@ -21,25 +21,22 @@ jobs:
           working-directory: ./path/to/your/dockerfile/directory
     
     test:
-    runs-on: ubuntu-latest
+        runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+        steps:
+        - name: Test Docker image
+          run: |
+            # Add your test commands here
+            # For example, you can run tests inside the container
+            docker run your-docker-hub-username/your-image-name:latest some-test-command
+            working-directory: ./path/to/your/dockerfile/directory
 
-    - name: Test Docker image
-      run: |
-        # Add your test commands here
-        # For example, you can run tests inside the container
-        docker run your-docker-hub-username/your-image-name:latest some-test-command
-        working-directory: ./path/to/your/dockerfile/directory
+    # push:
+    #     runs-on: ubuntu-latest
 
-    push:
-    runs-on: ubuntu-latest
+    # steps:
+    # - name: Log in to Docker Hub
+    #   run: docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-    steps:
-    - name: Log in to Docker Hub
-    run: docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
-
-    - name: Push Docker image to Docker Hub
-        run: docker push your-docker-hub-username/your-image-name:latest
+    # - name: Push Docker image to Docker Hub
+    #   run: docker push your-docker-hub-username/your-image-name:latest
