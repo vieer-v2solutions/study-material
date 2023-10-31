@@ -3,6 +3,16 @@
 kubectl config set-context --current --namespace=private
 ```
 
+# to pull from local
+```yml
+spec:
+  containers:
+    - name: application
+      image: nginx:alpine
+      imagePullPolicy: Never
+      ports:
+        - containerPort: 80
+```
 # This command allow to build image in minikube
 ```bash
 eval $(minikube docker-env)
