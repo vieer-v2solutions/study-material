@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hotelmicroservice
+  namespace: microservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hotelmicroservice
+  template:
+    metadata:
+      labels:
+        app: hotelmicroservice
+    spec:
+      containers:
+      - name: hotelmicroservice
+        image: vieerd/poc:Hotel-Microservice-6729755592
+        imagePullPolicy: Never
+        ports:
+          - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hotels
+            port: 80
+          periodSeconds: 60
+          timeoutSeconds: 120
+          successThreshold: 1
+          failureThreshold: 10 
+        env:
+          - name: SPRING_DATASOURCE_URL
+            valueFrom:
+              secretKeyRef:
+                name: database-secret
+                key: SPRING_DATASOURCE_URL
+          - name: SPRING_DATASOURCE_NAME
+            valueFrom:
+              secretKeyRef:
+                name: database-secret
+                key: SPRING_DATASOURCE_NAME
+
+          - name: SPRING_DATASOURCE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: database-secret
+                key: SPRING_DATASOURCE_USERNAME
+
+          - name: SPRING_DATASOURCE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: database-secret
+                key: SPRING_DATASOURCE_PASSWORD
+
+          - name: SERVICE_URL
+            value: "http://serviceregistry/eureka"
+      
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hotelmicroservice
+spec:
+  selector:
+    app: hotelmicroservice
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

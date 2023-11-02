@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: usermicroservice
+  namespace: microservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: usermicroservice
+  template:
+    metadata:
+      labels:
+        app: usermicroservice
+    spec:
+      containers:
+      - name: usermicroservice
+        image: vieerd/poc:User-Microservice-6730619136
+        imagePullPolicy: Never
+        ports:
+          - containerPort: 80 
+        env:
+          - name: SPRING_DATASOURCE_URL
+            valueFrom:
+              secretKeyRef:
+                name: database-secret
+                key: SPRING_DATASOURCE_URL
+          - name: SPRING_DATASOURCE_NAME
+            valueFrom:
+              secretKeyRef:
+                name: database-secret
+                key: SPRING_DATASOURCE_NAME
+
+          - name: SPRING_DATASOURCE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: database-secret
+                key: SPRING_DATASOURCE_USERNAME
+
+          - name: SPRING_DATASOURCE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: database-secret
+                key: SPRING_DATASOURCE_PASSWORD
+
+          - name: SERVICE_URL
+            value: "http://serviceregistry/eureka"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: usermicroservice
+spec:
+  selector:
+    app: usermicroservice
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

@@ -1,0 +1,78 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: microservice
+  namespace: microservice
+spec:
+  ingressClassName: microservice
+  rules:
+  - host: microservice.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: serviceregistry
+            port:
+              number: 80
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hotelmicroservice
+  namespace: microservice
+spec:
+  ingressClassName: microservice
+  rules:
+  - host: hotel.microservice.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: hotelmicroservice
+            port:
+              number: 80
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: usermicroservice
+  namespace: microservice
+spec:
+  ingressClassName: microservice
+  rules:
+  - host: user.microservice.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: usermicroservice
+            port:
+              number: 80
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ratingmicroservice
+  namespace: microservice
+spec:
+  ingressClassName: microservice
+  rules:
+  - host: rating.microservice.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: ratingmicroservice
+            port:
+              number: 80

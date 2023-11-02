@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ratingmicroservice
+  namespace: microservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ratingmicroservice
+  template:
+    metadata:
+      labels:
+        app: ratingmicroservice
+    spec:
+      containers:
+      - name: ratingmicroservice
+        image: vieerd/poc:Rating-Microservice-6730656955
+        imagePullPolicy: Never
+        ports:
+          - containerPort: 80 
+        # readinessProbe:
+        #   httpGet:
+        #     path: /ratings
+        #     port: 80
+        #   periodSeconds: 30
+        #   timeoutSeconds: 120
+        #   successThreshold: 1
+        #   failureThreshold: 10 
+        env:
+          - name: SPRING_DATASOURCE_URL
+            valueFrom:
+              secretKeyRef:
+                name: database-secret
+                key: SPRING_DATASOURCE_URL
+          - name: SPRING_DATASOURCE_NAME
+            valueFrom:
+              secretKeyRef:
+                name: database-secret
+                key: SPRING_DATASOURCE_NAME
+
+          - name: SPRING_DATASOURCE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: database-secret
+                key: SPRING_DATASOURCE_USERNAME
+
+          - name: SPRING_DATASOURCE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: database-secret
+                key: SPRING_DATASOURCE_PASSWORD
+
+          - name: SERVICE_URL
+            value: "http://serviceregistry/eureka"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ratingmicroservice
+spec:
+  selector:
+    app: ratingmicroservice
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
