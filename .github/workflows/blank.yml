@@ -7,7 +7,7 @@ on:
 jobs:
   
   one:
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/mains' }}
     runs-on: ubuntu-latest
     steps:
       - name: Run a multi-line script
