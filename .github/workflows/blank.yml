@@ -3,11 +3,12 @@ on:
   release:
     types: [created]
 jobs:
-  
   one:
-    # if: github.ref == 'refs/heads/main'
+    if: github.event_name == 'release' && github.event.action == 'created'
     runs-on: ubuntu-latest
     steps:
+      - name: getTag
+        run: echo "${{ github.event.name }}"
       - name: Run a multi-line script
         run: echo "${{ toJSON(github)}}"
       - name: Timestamp
