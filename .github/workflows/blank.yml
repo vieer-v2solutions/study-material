@@ -32,7 +32,7 @@ jobs:
       - name: Run a one-line script
         run: echo "Hello, world!" > Log.txt
       - name:  artifacts
-        uses: actions/upload-artifacts@v3
+        uses: actions/upload-artifact@v3
         with: 
           name: file
           path: |
