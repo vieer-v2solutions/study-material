@@ -47,5 +47,7 @@ jobs:
           name: file
       - name: list
         run: ls
+      - name: cat
+        run: cat Log.txt
       
   
