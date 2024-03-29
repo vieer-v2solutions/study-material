@@ -1,13 +1,11 @@
 name: CI
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  release:
+    types: [created]
 jobs:
   
   one:
-    if: ${{ github.ref == 'refs/heads/mains' }}
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Run a multi-line script
