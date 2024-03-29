@@ -8,11 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: getTag
-        run: echo "${{ github.event.name }}"
+        run: echo "${{ github.event.release.name }}"
       - name: Run a multi-line script
         run: echo "${{ toJSON(github)}}"
-      - name: Timestamp
-        run: echo "${{github.event.commits[0].timestamp}}"
+        
   two:
     needs : one
     runs-on: ubuntu-latest
