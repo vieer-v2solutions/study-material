@@ -37,5 +37,15 @@ jobs:
           name: file
           path: |
             Log.txt
+  deploy: 
+    needs: artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name:  artifacts
+        uses: actions/download-artifact@v3
+        with: 
+          name: file
+      - name: list
+        run: ls
       
   
