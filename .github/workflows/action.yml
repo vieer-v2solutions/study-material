@@ -1,0 +1,36 @@
+name: MY-V@s
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs: 
+      NAME : ${{ steps.creation.outputs.name }}
+      TYPE : ${{ steps.creation.outputs.type }}
+    steps:
+      - name: Run a one-line script
+        id : creation
+        run: |
+          echo "name=Vieer.pdf" >> $GITHUB_OUTPUT
+          echo "type=pdf" >> $GITHUB_OUTPUT
+          
+  deploy:
+    needs : build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run a one-line script
+        id : creation
+        run: |
+          echo "Name is : ${{ needs.build.outputs.NAME }} | Type is : ${{ needs.build.outputs.TYPE }}"
+  python-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+        # cache: 'pip'
+    - run: pip install -r req.txt
