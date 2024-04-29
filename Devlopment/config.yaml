@@ -1,0 +1,99 @@
+Enviorment: Development
+Project: Megasecret
+
+vpc_id : vpc-0da73e4d3480e2820
+subnets:
+- subnet-08b7c385fd8187b90
+- subnet-023f3ffc859fbc221
+
+load_balancer:
+  name: myapplication
+  security_groups:
+  - sg-084718a7967afbcea
+  listeners:
+  - app:
+    port: 80
+    protocol: HTTP
+    forward:
+      target_group_key: app
+  target_groups:
+    app:
+      create_attachment: false
+      protocol: HTTP
+      port: 80
+      target_type: instance
+
+
+auto_scaling:
+  name: myapplication
+  min_size: 0
+  max_size: 1
+  desired_capacity: 1
+  wait_for_capacity_timeout: 0
+  health_check_type: EC2
+  initial_lifecycle_hooks:
+    - name: Startup_LifeCycleHook
+      default_result: CONTINUE
+      heartbeat_timeout: 60
+      lifecycle_transition: autoscaling:EC2_INSTANCE_LAUNCHING
+      notification_metadata: '{"hello": "world"}'
+      
+    - name: Termination_LifeCycleHook
+      default_result: CONTINUE
+      heartbeat_timeout: 180
+      lifecycle_transition: autoscaling:EC2_INSTANCE_TERMINATING
+      notification_metadata: '{"goodbye": "world"}'
+  instance_refresh:
+    strategy: Rolling
+    auto_rollback: true
+    preferences:
+      checkpoint_delay: 600
+      checkpoint_percentages:
+        - 35
+        - 70
+        - 100
+      instance_warmup: 300
+      min_healthy_percentage: 50
+      max_healthy_percentage: 100
+    triggers:
+      - tag
+
+  launch_template: 
+    name: application
+    launch_template_description: The application template
+    update_default_version: true
+    image_id: ami-058bd2d568351da34
+    instance_type: t3.micro
+    ebs_optimized: false
+    enable_monitoring: true
+    iam_instance_profile_arn : arn:aws:iam::637423489864:instance-profile/ec2-full-acces
+    block_device_mappings:
+      - device_name: /dev/xvda
+        no_device: 0
+        ebs:
+          delete_on_termination: true
+          encrypted: true
+          volume_size: 20
+          volume_type: gp2
+    capacity_reservation_specification:
+      capacity_reservation_preference: open
+    cpu_options:
+      core_count: 1
+      threads_per_core: 1
+    credit_specification:
+      cpu_credits: standard
+    instance_market_options:
+      market_type: spot
+    metadata_options:
+      http_endpoint: enabled
+      http_tokens: required
+      http_put_response_hop_limit: 1
+    network_interfaces:
+      - associate_public_ip_address: true
+        delete_on_termination: true
+        description: eth0
+        device_index: 0
+        security_groups:
+          - sg-084718a7967afbcea
+    placement:
+      availability_zone: us-east-1a
