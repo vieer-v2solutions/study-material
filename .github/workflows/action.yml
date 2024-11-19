@@ -1,9 +1,6 @@
 name: MY-V@s
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
